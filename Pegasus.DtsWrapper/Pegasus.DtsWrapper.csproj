@@ -32,10 +32,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="KingswaySoft.IntegrationToolkit.DynamicsCrm, Version=1.0.2016.0, Culture=neutral, PublicKeyToken=705df8e0751bcea7, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\External Reference\KingswaySoft.IntegrationToolkit.DynamicsCrm.dll</HintPath>
-    </Reference>
+    <Reference Include="KingswaySoft.IntegrationToolkit.DynamicsCrm, Version=1.0.2016.0, Culture=neutral, PublicKeyToken=705df8e0751bcea7, processorArchitecture=MSIL" />
     <Reference Include="Microsoft.SqlServer.ADONETDest, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\..\Windows\Microsoft.NET\assembly\GAC_MSIL\Microsoft.SqlServer.ADONETDest\v4.0_13.0.0.0__89845dcd8080cc91\Microsoft.SqlServer.ADONETDest.dll</HintPath>
@@ -152,7 +149,9 @@
     <Compile Include="ISVariable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
