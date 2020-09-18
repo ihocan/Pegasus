@@ -9,8 +9,9 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Pegasus.DtsWrapper</RootNamespace>
     <AssemblyName>Pegasus.DtsWrapper</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,6 +32,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="KingswaySoft.IntegrationToolkit.DynamicsCrm, Version=1.0.2016.0, Culture=neutral, PublicKeyToken=705df8e0751bcea7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\External Reference\KingswaySoft.IntegrationToolkit.DynamicsCrm.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.SqlServer.ADONETDest, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\..\..\..\..\..\Windows\Microsoft.NET\assembly\GAC_MSIL\Microsoft.SqlServer.ADONETDest\v4.0_13.0.0.0__89845dcd8080cc91\Microsoft.SqlServer.ADONETDest.dll</HintPath>
@@ -89,6 +94,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ConnectionManagers\ISExcelConnectionManager.cs" />
+    <Compile Include="ConnectionManagers\ISKingswaySoftCRMConnectionManager.cs" />
     <Compile Include="ControlFlowBaseObjects\ISContainer.cs" />
     <Compile Include="ControlFlowBaseObjects\ISExecutable.cs" />
     <Compile Include="ControlFlowBaseObjects\ISPrecedenceConstraint.cs" />
@@ -99,22 +105,27 @@
     <Compile Include="ConnectionManagers\ISDatabaseConnectionManagers.cs" />
     <Compile Include="Containers\ISSequence.cs" />
     <Compile Include="Converter.cs" />
-    <Compile Include="ForLoopContainer.cs" />
+    <Compile Include="ControlFlowBaseObjects\ISForLoopContainer.cs" />
     <Compile Include="ISAttributes.cs" />
-    <Compile Include="PipelineComponents\ISAdoNetDestination.cs" />
-    <Compile Include="PipelineComponents\ISAdoNetSourceComponent.cs" />
+    <Compile Include="PipelineComponents\Destination\ISCrmDestination.cs" />
+    <Compile Include="PipelineComponents\Destination\ISAdoNetDestination.cs" />
+    <Compile Include="PipelineComponents\Source\ISCrmSourceComponent.cs" />
+    <Compile Include="PipelineComponents\Source\ISAdoNetSourceComponent.cs" />
     <Compile Include="PipelineComponents\ISConditionalSplitOutput.cs" />
     <Compile Include="ControlFlowTasks\ISExecutePackageTask.cs" />
     <Compile Include="ControlFlowTasks\ISExecutePackageTaskParameterBinding.cs" />
     <Compile Include="ControlFlowTasks\ISExecuteSqlTask.cs" />
     <Compile Include="ControlFlowBaseObjects\ISEventHandler.cs" />
     <Compile Include="ControlFlowTasks\ISScriptTask.cs" />
-    <Compile Include="PipelineComponents\ISDestinationComponent.cs" />
+    <Compile Include="PipelineComponents\Destination\ISDestinationComponent.cs" />
     <Compile Include="PipelineComponents\ColumnInputOutput\ISExternalMetadataColumn.cs" />
-    <Compile Include="PipelineComponents\ISExcelSourceComponent.cs" />
+    <Compile Include="PipelineComponents\Source\ISExcelSourceComponent.cs" />
+    <Compile Include="PipelineComponents\Destination\ISFlatFileDestination.cs" />
     <Compile Include="PipelineComponents\ISMulticastComponent.cs" />
     <Compile Include="PipelineComponents\ISDerivedColumnComponent.cs" />
-    <Compile Include="PipelineComponents\ISFlatFileSourceComponent.cs" />
+    <Compile Include="PipelineComponents\Source\ISFlatFileSourceComponent.cs" />
+    <Compile Include="PipelineComponents\Destination\ISOleDbDestinationComponent.cs" />
+    <Compile Include="PipelineComponents\Source\ISOleDBSourceComponent.cs" />
     <Compile Include="PipelineComponents\ISScriptComponent.cs" />
     <Compile Include="PipelineComponents\ISConditionalSplitComponent.cs" />
     <Compile Include="ISEnums.cs" />
@@ -131,7 +142,7 @@
     <Compile Include="ISPath.cs" />
     <Compile Include="PipelineComponents\ISRowCountComponent.cs" />
     <Compile Include="PipelineComponents\ISSortComponent.cs" />
-    <Compile Include="PipelineComponents\ISSourceComponents.cs" />
+    <Compile Include="PipelineComponents\Source\ISSourceComponents.cs" />
     <Compile Include="PipelineComponents\ColumnInputOutput\ISOutput.cs" />
     <Compile Include="PipelineComponents\ColumnInputOutput\ISOutputColumn.cs" />
     <Compile Include="PipelineComponents\ISPipelineComponent.cs" />

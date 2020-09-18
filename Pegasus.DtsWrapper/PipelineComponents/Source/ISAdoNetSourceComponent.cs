@@ -2,7 +2,7 @@
 using Microsoft.SqlServer.Dts.Pipeline.Wrapper;
 using System.Data.SqlClient;
 
-namespace Pegasus.DtsWrapper
+namespace Pegasus.DtsWrapper.Source
 {
     public class ISAdoNetSourceComponent : ISSourceComponent
     {

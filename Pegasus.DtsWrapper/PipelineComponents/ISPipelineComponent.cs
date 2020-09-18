@@ -7,35 +7,33 @@ using System.Collections;
 namespace Pegasus.DtsWrapper
 {
     /// <summary>
-    /// A Data Flow Component implements two interfaces: IDTSDesigntimeComponent100 and IDTSRuntimeComponent100.
+    /// A Data Flow Component implements two interfaces: IDTSComponentMetaData100 and CManagedComponentWrapper.
     /// The IDTSRuntimeComponent100 interface defines the methods and properties that are called during execution of the component.
-    /// The interface contains Properties such as BufferManager, EventInfos, LogEntryEinfos etc. 
+    /// The interface contains Properties such as BufferManager, EventInfos, LogEntryEinfos etc.
     /// Specifically it also has a Property called ComponentMetaData (which is of use for generating components programmatically).
     /// The first step to create a Data Flow Component is:
     ///     1. Call the New method on ComponentMetaDataCollection of the Data Flow Task's MainPipe; which results in a IDTSComponentMetaData100 being created and returned
     ///     2. Set the ComponentClassID of the returned IDTSComponentMetaData100 object to the appropriate pipeline component type.
     ///     3. Call the Instantiate method on the IDTSComponentMetaData100 object which will then create the design time instance of the required component.
     ///     4. Then the ProvideComponentProperties method on the design time instance is called. The inputs/outputs and custom properties are then made available.
-    ///     
+    ///
     /// The IDTSDesigntimeComponent100 interface
-    /// 
+    ///
     /// As a general rule:
     ///     use hte design time component's methods when calling Object Modle methods that modify a component.
     ///     While some modifications can be done by directly modiying the ComponentMetaData, it is not recommended by Microsoft.
-    /// 
+    ///
     /// </summary>
     public class ISPipelineComponent
     {
         #region ctor
 
         #region ctor that accepts the parent data flow task, the component info (type and name)
-                
         public ISPipelineComponent(ISDataFlowTask parentDataFlowTask, string componentMoniker, string componentname) :
             this(componentname, componentMoniker, parentDataFlowTask.MainPipe)
         {
             ParentDataFlowTask = parentDataFlowTask;
         }
-
         #endregion
 
         #region ctor that accepts a MainPipe, component info (type and name)
@@ -57,14 +55,14 @@ namespace Pegasus.DtsWrapper
                 {
                     componentExists = true;
                     ComponentMetaData = comp;
-                    // Assign the IDTSDesignTimeCoomponent100 so that we can change the properties.
+                    // Assign the CManagedComponentWrapper so that we can change the properties.
                     // But Do not call ProvideComponentProperties() on the IDTSDesignTimeCoomponent100 after the assignment.
-                    // Since the IDTSComponentMetadata100 already exists, the properties were already made available.
+                    // Since the CManagedComponentWrapper already exists, the properties were already made available.
                     // Calling ProvideComponentProperties will override the existing properties and set their values to default values; thus losing the existing properties
                     DesignTimeComponent = ComponentMetaData.Instantiate();
                 }
             }
-            if (!(componentExists))
+            if (!componentExists)
             {
                 ComponentMetaData = mainPipe.ComponentMetaDataCollection.New(); // Adds a new "component" to the Data Flow Task's Pipeline
                 ComponentMetaData.ComponentClassID = componentMoniker; //
@@ -92,16 +90,14 @@ namespace Pegasus.DtsWrapper
         #region Dts Wrapper Objects
 
         internal CManagedComponentWrapper DesignTimeComponent { get; set; }
-        //internal IDTSDesigntimeComponent100 DesignTimeComponent { get; set; }
         internal IDTSComponentMetaData100 ComponentMetaData { get; set; }
-        //internal IDTSRuntimeComponent100 RunTimeComponent { get; set; }
 
         #endregion
 
         #region Dts Wrapper Objects Properties
 
         bool AreInputColumnsValid { get { return ComponentMetaData.AreInputColumnsValid; } }
-        
+
         public string ComponentClassID { get { return ComponentMetaData.ComponentClassID; } set { ComponentMetaData.ComponentClassID = value; } }
 
         public string ContactInfo { get { return ComponentMetaData.ContactInfo; } set { ComponentMetaData.ContactInfo = value; } }
@@ -110,8 +106,8 @@ namespace Pegasus.DtsWrapper
         ///  The Custom Property Collection only contains the "custom" properties of a component.
         ///  Common properties of all components such as Name, Description etc are not available in this collection.
         ///  Therefore calling SetCustomProperty and GetCustomProperty on common properties will result in error.
-        ///  Custom properties do not have a data type property. 
-        ///  The data type of a custom property is set by the data type of the value that you assign to its Value property. 
+        ///  Custom properties do not have a data type property.
+        ///  The data type of a custom property is set by the data type of the value that you assign to its Value property.
         ///  However, after you have assigned an initial value to the custom property, you cannot assign a value with a different data type.
         /// </summary>
         internal IDTSCustomPropertyCollection100 CustomPropertyCollection_m { get { return ComponentMetaData.CustomPropertyCollection; } }
@@ -246,7 +242,7 @@ namespace Pegasus.DtsWrapper
         public bool RetrieveMetaData()
         {
             bool success = false;
-            
+
             try
             {
                 DesignTimeComponent.AcquireConnections(null);
@@ -305,7 +301,7 @@ namespace Pegasus.DtsWrapper
         public bool RetrieveMetaData_AnoOld(string connection, string password)
         {
             ConnectionManager origConnectionManager = GetConnectionManager(connection);
-            
+
             ConnectionManager cm = ParentDataFlowTask.RootPackage.Connections.Add(origConnectionManager.CreationName) as ConnectionManager;
             cm.Name = "DummyConnToForce";
             cm.ConnectionString = origConnectionManager.ConnectionString + ";Password=" + password + ";";
@@ -406,7 +402,7 @@ namespace Pegasus.DtsWrapper
             //        id = i;
             //}
             //return id;
-            
+
             return ComponentMetaData.OutputCollection.GetObjectIndexByID(GetOutputFromName(outputName).ID);
         }
 
@@ -609,7 +605,7 @@ namespace Pegasus.DtsWrapper
                 if (inputColumn.CustomPropertyCollection[i].Name == propertyName)
                 {
                     propertyExists = true;
-                    //prop = 
+                    //prop =
                     break;
                 }
             }
@@ -658,7 +654,7 @@ namespace Pegasus.DtsWrapper
         internal ConnectionManager GetConnectionManager(string connectionName)
         {
             ConnectionManager cm = ParentDataFlowTask.RootPackage.Connections[connectionName];
-            
+
             //for (int c = 0; c < ParentDataFlowTask.RootPackage.Connections.Count; c++)
             //{
             //    if (connectionName == ParentDataFlowTask.RootPackage.Connections[c].Name)
@@ -747,5 +743,16 @@ namespace Pegasus.DtsWrapper
 
         #endregion
 
+
+
+
+        #region New Methods ihocan
+
+        //AcquireConnections https://docs.microsoft.com/en-us/dotnet/api/microsoft.sqlserver.dts.pipeline.wrapper.idtsdesigntimecomponent100.acquireconnections
+        //DeleteExternalMetadataColumn(ID,ExternalMedataColumnId) https://docs.microsoft.com/en-us/dotnet/api/microsoft.sqlserver.dts.pipeline.wrapper.idtsdesigntimecomponent100.deleteexternalmetadatacolumn_
+        //DeleteInput  https://docs.microsoft.com/en-us/dotnet/api/microsoft.sqlserver.dts.pipeline.wrapper.idtsdesigntimecomponent100.deleteinput
+        //DeleteOutput https://docs.microsoft.com/en-us/dotnet/api/microsoft.sqlserver.dts.pipeline.wrapper.cmanagedcomponentwrapper
+
+        #endregion
     }
 }

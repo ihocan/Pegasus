@@ -3,10 +3,11 @@ using System.IO;
 using System.Data;
 using System.Collections.Generic;
 using Pegasus.DtsWrapper;
+using Pegasus.DtsWrapper.Source;
 
 namespace Pegasus.Demo
 {
-    
+
     public class SortExample
     {
         /*
@@ -48,14 +49,14 @@ a,c,b
             Console.WriteLine("Creating flatfile conn");
 
             ISOledbConnectionManager oleConn = new ISOledbConnectionManager(@"Data Source=localhost;Initial Catalog=PegasusDemo;Provider=SQLNCLI11.1;Integrated Security=SSPI;Auto Translate=False;", "SourceDB", mainProject);
-            
+
             ISFlatFileConnectionManager fConn = new ISFlatFileConnectionManager(_sourceFile, "Flat_File", mainProject);
             fConn.ColumnNamesInFirstDataRow = true;
             //fConn.TextQualifier = "\"";
             fConn.Format = "Delimited";
             fConn.RowDelimiter = "\r\n"; // check for LF/CRLF if using git
             string columnDelimiter = ",";
-            
+
             //  create a FlatFile column for each column the in the source file
             for (int i = 0; i < columnNames.Length; i++)
             {

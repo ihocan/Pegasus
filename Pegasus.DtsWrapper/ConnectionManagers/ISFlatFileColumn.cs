@@ -130,7 +130,7 @@ namespace Pegasus.DtsWrapper
             IsLastColumnInCollection = isLastColumnInFile;
         }
 
-        
+
 
         #endregion
 
@@ -183,7 +183,7 @@ namespace Pegasus.DtsWrapper
                 MaximumWidth = 0;
                 DataPrecision = dataPrecision;
                 DataScale = dataScale;
-            }        
+            }
         }
 
         #endregion

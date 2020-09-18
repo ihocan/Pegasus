@@ -2,7 +2,7 @@
 
 namespace Pegasus.DtsWrapper
 {
-    public class ForLoopContainer : ISEventsProviderAsIDTSSequence
+    public class ISForLoopContainer : ISEventsProviderAsIDTSSequence
     {
         #region ctor
 
@@ -13,7 +13,7 @@ namespace Pegasus.DtsWrapper
         /// </summary>
         /// <param name="displayName">The name of the executable</param>
         /// <param name="immediateContainer">The immediate parent of the executable</param>
-        public ForLoopContainer(string displayName, ISContainer immediateContainer):
+        public ISForLoopContainer(string displayName, ISContainer immediateContainer):
             base("STOCK:FORLOOP", displayName, immediateContainer)
         {
             ForLoop = EventsProvider as ForLoop;
@@ -27,7 +27,7 @@ namespace Pegasus.DtsWrapper
         /// A constructor that accepts a Microsoft.SqlServer.Dts.Runtime.EventsProvider object
         /// </summary>
         /// <param name="sequence"></param>
-        internal ForLoopContainer(ForLoop forLoop) : base((EventsProvider)forLoop)
+        internal ISForLoopContainer(ForLoop forLoop) : base((EventsProvider)forLoop)
         {
             ForLoop = forLoop;
         }

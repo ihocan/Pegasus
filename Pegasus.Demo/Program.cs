@@ -55,19 +55,21 @@ namespace Pegasus.Demo
 
 
 
-            //  //  //  AdoNet Source and Destination
+            ////  //  //  AdoNet Source and Destination
             //AdoNetSourceAndDestination ado = new AdoNetSourceAndDestination();
             //ado.DFTWithAdoNetSourceAndDestination();
 
-
+            //AdoNet Source and Destination
+            KingswaySoftOperation kingswaySoftOperation = new KingswaySoftOperation();
+            kingswaySoftOperation.KingswayConnection();
 
             //  //  //  Excel Example
             //ExcelExample ee = new ExcelExample();
             //ee.ExcelToSqlServerTable();
 
             //  //  //  Sort Example
-            SortExample se = new SortExample();
-            se.CreatePackageWithSort();
+            //SortExample se = new SortExample();
+            //se.CreatePackageWithSort();
         }
 
         private static void CreateFolder(string folderPath)

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using Microsoft.SqlServer.Dts.Pipeline.Wrapper;
 using Microsoft.SqlServer.Dts.Runtime.Wrapper;
@@ -137,7 +138,6 @@ namespace Pegasus.DtsWrapper
         }
 
         #endregion
-
         #endregion
 
         #region ctor
@@ -242,20 +242,24 @@ namespace Pegasus.DtsWrapper
                 if (ParentComponent.ComponentMetaData.OutputCollection[o].IsErrorOut == true)
                     errorOutput = ParentComponent.ComponentMetaData.OutputCollection[o];
             }
-
             bool errorColExists = false;
-            int errorColCount = errorOutput.OutputColumnCollection.Count;
-            for (int e = 0; e < errorColCount; e++)
+            if (errorOutput != null)
             {
-                if (errorOutput.OutputColumnCollection[e].Name == outputColumnName)
-                    errorColExists = true;
+                int errorColCount = errorOutput.OutputColumnCollection.Count;
+                for (int e = 0; e < errorColCount; e++)
+                {
+                    if (errorOutput.OutputColumnCollection[e].Name == outputColumnName)
+                        errorColExists = true;
+                }
+                if (!(errorColExists))
+                {
+                    IDTSOutputColumn100 o = errorOutput.OutputColumnCollection.NewAt(errorColCount - 2);
+                    o.Name = outputColumnName;
+                }
             }
 
-            if (!(errorColExists))
-            {
-                IDTSOutputColumn100 o = errorOutput.OutputColumnCollection.NewAt(errorColCount - 2);
-                o.Name = outputColumnName;
-            }
+
+
         }
 
         #endregion
@@ -270,8 +274,98 @@ namespace Pegasus.DtsWrapper
             Scale = scale;
             CodePage = codePage;
         }
+        public void SetDataType(SSISDataTypeWithProperty sSISDataTypeWithProperty)
+        {
+            DataType = sSISDataTypeWithProperty.DataType;
+            Length = sSISDataTypeWithProperty.Length;
+            Precision = sSISDataTypeWithProperty.Precision;
+            Scale = sSISDataTypeWithProperty.Scale;
+            CodePage = sSISDataTypeWithProperty.CodePage;
+        }
 
         #endregion
+        #region 
+        public void SetCustomPropertyToExternalMetadataColumn(string propertyName, object propertyValue, bool containsId = false)
+        {
+            int sourceId = 0;
+            if (Input != null)
+                sourceId = Input.ID;
+            else
+                sourceId = Output.ID;
+            bool propertyExists = false;
+            IDTSCustomProperty100 customProperty = null;
+            for (int i = 0; i < ExternalMetadataColumn.CustomPropertyCollection.Count; i++)
+            {
+                if (ExternalMetadataColumn.CustomPropertyCollection[i].Name == propertyName)
+                {
+                    propertyExists = true;
+                    break;
+                }
+            }
+            if (propertyExists)
+            {
+                customProperty = ParentComponent.DesignTimeComponent.SetExternalMetadataColumnProperty(sourceId, ExternalMetadataColumn.ID, propertyName, propertyValue);
+                customProperty.ContainsID = containsId;
+            }
+            else
+            {
+                customProperty = ExternalMetadataColumn.CustomPropertyCollection.New();
+                customProperty.Name = propertyName;
+                customProperty.Value = propertyValue;
+                customProperty.ContainsID = containsId;
+            }
+
+        }
+        public void SetCustomPropertyToExternalMetadataColumn(List<MetaDataColumnCustomPropety> metaDataColumnCustomPropeties)
+        {
+            int sourceId = 0;
+            if (Input != null)
+                sourceId = Input.ID;
+            else
+                sourceId = Output.ID;
+
+            bool propertyExists = false;
+            foreach (MetaDataColumnCustomPropety metaDataColumnCustomPropety in metaDataColumnCustomPropeties)
+            {
+                IDTSCustomProperty100 customProperty = null;
+                for (int i = 0; i < ExternalMetadataColumn.CustomPropertyCollection.Count; i++)
+                {
+                    if (ExternalMetadataColumn.CustomPropertyCollection[i].Name == metaDataColumnCustomPropety.Name)
+                    {
+                        propertyExists = true;
+                        break;
+                    }
+                }
+                if (propertyExists)
+                {
+                    customProperty = ParentComponent.DesignTimeComponent.SetExternalMetadataColumnProperty(sourceId, ExternalMetadataColumn.ID, metaDataColumnCustomPropety.Name, metaDataColumnCustomPropety.Value);
+                    customProperty.ContainsID = metaDataColumnCustomPropety.ContainsId;
+                }
+                else
+                {
+                    customProperty = ExternalMetadataColumn.CustomPropertyCollection.New();
+                    customProperty.Name = metaDataColumnCustomPropety.Name;
+                    customProperty.Value = metaDataColumnCustomPropety.Value;
+                    customProperty.ContainsID = metaDataColumnCustomPropety.ContainsId;
+                }
+            }
+
+
+        }
+
+        public IDTSCustomProperty100 GetCustomPropertyForExternalMetadataColums(string propertyName)
+        {
+            for (int i = 0; i < ExternalMetadataColumn.CustomPropertyCollection.Count; i++)
+            {
+                if (ExternalMetadataColumn.CustomPropertyCollection[i].Name == propertyName)
+                {
+                    return ExternalMetadataColumn.CustomPropertyCollection[i];
+                }
+            }
+            return null;
+        }
+        #endregion
+
 
     }
 }

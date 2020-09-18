@@ -1,7 +1,7 @@
 ﻿using Microsoft.SqlServer.Dts.Runtime;
 using Microsoft.SqlServer.Dts.Pipeline.Wrapper;
 
-namespace Pegasus.DtsWrapper
+namespace Pegasus.DtsWrapper.Source
 {
     public class ISFlatFileSourceComponent : ISPipelineComponent
     {

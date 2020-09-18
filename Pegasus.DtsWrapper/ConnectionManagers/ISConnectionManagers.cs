@@ -84,6 +84,7 @@ namespace Pegasus.DtsWrapper
         /// <param name="package"></param>
         internal ISConnectionManager(string connectionString, string name, string creationName, Project project = null, Package package = null)
         {
+           
             if (project != null)
             {
                 SetProjectConnectionManager(connectionString, name, creationName, project);

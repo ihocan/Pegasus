@@ -9,9 +9,10 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Pegasus.Demo</RootNamespace>
     <AssemblyName>Pegasus.Demo</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -33,10 +34,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="KingswaySoft.IntegrationToolkit.DynamicsCrm, Version=1.0.2016.0, Culture=neutral, PublicKeyToken=705df8e0751bcea7, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\External Reference\KingswaySoft.IntegrationToolkit.DynamicsCrm.dll</HintPath>
+    </Reference>
     <Reference Include="LumenWorks.Framework.IO, Version=3.8.0.0, Culture=neutral, PublicKeyToken=5ad3ea2f85776344, processorArchitecture=MSIL">
       <HintPath>..\packages\LumenWorks.Framework.IO.3.8.0\lib\net20\LumenWorks.Framework.IO.dll</HintPath>
-      <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.SqlServer.ManagedDTS, Version=13.0.0.0, Culture=neutral, PublicKeyToken=89845dcd8080cc91" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -48,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="AdoNetSourceAndDestination.cs" />
+    <Compile Include="KingswaySoftOperation.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="ControlFlowTaskExample.cs" />
     <Compile Include="DataFlowExample.cs" />
@@ -65,15 +71,15 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="ExampleFiles\customer.txt" />
+    <Content Include="ExampleFiles\order_info.txt" />
+    <Content Include="ExampleFiles\shipment.txt" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Pegasus.DtsWrapper\Pegasus.DtsWrapper.csproj">
       <Project>{d2acb36a-5c63-4287-b7c9-47db5df9d042}</Project>
       <Name>Pegasus.DtsWrapper</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="ExampleFiles\customer.txt" />
-    <Content Include="ExampleFiles\order_info.txt" />
-    <Content Include="ExampleFiles\shipment.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

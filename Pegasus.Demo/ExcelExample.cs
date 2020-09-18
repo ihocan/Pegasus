@@ -1,6 +1,8 @@
 ﻿using Pegasus.DtsWrapper;
 using System.IO;
 using System.Collections.Generic;
+using Pegasus.DtsWrapper.Source;
+using Pegasus.DtsWrapper.Destination;
 
 namespace Pegasus.Demo
 {
@@ -40,7 +42,7 @@ namespace Pegasus.Demo
 
             // <Mapping info that says which excel source column should go to which sql server table column
             List<SourceColumnTargetColumnMap> sourceTargetMappings = new List<SourceColumnTargetColumnMap>();
-            // In this example, I am manullay populating the source to target map. 
+            // In this example, I am manullay populating the source to target map.
             // Otherwise, this information can be gathered programmatically for both source and target from external config files/mapping tables etc.
             // For programmatic translation of other data types to SSIS data types, refer to the code in Converter class in the DtsWrapper library
             sourceTargetMappings.Add(new SourceColumnTargetColumnMap

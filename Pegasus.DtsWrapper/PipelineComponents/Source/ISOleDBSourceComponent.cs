@@ -1,31 +1,13 @@
-﻿using Microsoft.SqlServer.Dts.Runtime;
-using Microsoft.SqlServer.Dts.Pipeline.Wrapper;
+﻿using Microsoft.SqlServer.Dts.Pipeline.Wrapper;
+using Microsoft.SqlServer.Dts.Runtime;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace Pegasus.DtsWrapper
+namespace Pegasus.DtsWrapper.Source
 {
-    public class ISSourceComponent : ISPipelineComponent
-    {
-        #region ctor
-
-        internal ISSourceComponent(IDTSComponentMetaData100 component) : base(component)
-        {
-
-        }
-
-        public ISSourceComponent(ISDataFlowTask parentDataFlowTask, string componentMoniker, string componentname)
-            : base(parentDataFlowTask, componentMoniker, componentname)
-        {
-
-        }
-
-        #endregion
-
-        #region Private properties
-
-        internal bool _connectionAssgined = false;
-        #endregion
-    }
-
     public class ISOleDbSourceComponent : ISSourceComponent
     {
         #region ctor
@@ -235,4 +217,3 @@ namespace Pegasus.DtsWrapper
         #endregion
     }
 }
-

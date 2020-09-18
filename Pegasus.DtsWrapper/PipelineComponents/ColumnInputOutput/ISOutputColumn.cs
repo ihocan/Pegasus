@@ -233,7 +233,11 @@ namespace Pegasus.DtsWrapper
             if (dataType != SSISDataType.DT_EMPTY)
                 OutputColumn.SetDataTypeProperties(DtsUtility.EnumAToEnumB<SSISDataType, DataType>(dataType), length, precision, scale, codePage);
         }
-
+        public void SetDataTypeProperties(SSISDataTypeWithProperty sSISDataTypeWithProperty)
+        {
+            if (sSISDataTypeWithProperty.DataType != SSISDataType.DT_EMPTY)
+                OutputColumn.SetDataTypeProperties(DtsUtility.EnumAToEnumB<SSISDataType, DataType>(sSISDataTypeWithProperty.DataType), sSISDataTypeWithProperty.Length, sSISDataTypeWithProperty.Precision, sSISDataTypeWithProperty.Scale, sSISDataTypeWithProperty.CodePage);
+        }
         #endregion
 
         #region ctor
@@ -260,7 +264,7 @@ namespace Pegasus.DtsWrapper
             }
         }
 
-        public ISOutputColumn(ISPipelineComponent parentComponent, string outputName, string outputColumnname, 
+        public ISOutputColumn(ISPipelineComponent parentComponent, string outputName, string outputColumnname,
             RowDisposition errorRowDisposition,
             RowDisposition truncationRowDisposition)
             : this(parentComponent, outputName, outputColumnname)
@@ -268,7 +272,7 @@ namespace Pegasus.DtsWrapper
             OutputColumn.ErrorRowDisposition = DtsUtility.EnumAToEnumB<RowDisposition, DTSRowDisposition>(errorRowDisposition);
             OutputColumn.TruncationRowDisposition = DtsUtility.EnumAToEnumB<RowDisposition, DTSRowDisposition>(truncationRowDisposition);
         }
-                        
+
         #endregion
     }
 }

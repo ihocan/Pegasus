@@ -1,6 +1,9 @@
 ﻿using Pegasus.DtsWrapper;
 using System.IO;
 using System.Collections.Generic;
+using Pegasus.DtsWrapper.ConnectionManagers;
+using Pegasus.DtsWrapper.Source;
+using Pegasus.DtsWrapper.Destination;
 
 namespace Pegasus.Demo
 {
@@ -30,7 +33,6 @@ namespace Pegasus.Demo
 
             //  create a package
             ISPackage package = new ISPackage("ExamplePackage", mainProject);
-            
             //  Create a Source ADO.net connection manager
             ISAdoNetConnectionManager srcAdoNetConn = new ISAdoNetConnectionManager(@"Application Name=mySsisApp;", "SourceADONetConnection", mainProject);
             srcAdoNetConn.InitialCatalog = "PegasusDemo";
@@ -54,7 +56,7 @@ namespace Pegasus.Demo
                 );
 
             ISDataFlowTask prevDft = (ISDataFlowTask)null;
-            foreach(SourceTargetTableMap st in srcTrgMap)
+            foreach (SourceTargetTableMap st in srcTrgMap)
             {
                 //  Create a DataFlow Task
                 ISDataFlowTask dft = new ISDataFlowTask(st.SourceTable + " Data Flow", package);
@@ -79,7 +81,7 @@ namespace Pegasus.Demo
                 }
                 prevDft = dft;
             }
-            
+
             mainProject.SaveToDisk();
 
         }

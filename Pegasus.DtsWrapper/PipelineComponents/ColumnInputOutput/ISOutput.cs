@@ -256,9 +256,13 @@ namespace Pegasus.DtsWrapper
                 }
                 else
                 {
-                    Console.WriteLine("WARN::: Only {1} output(s) are allowed. A new output with the name '{0}' cannot be added. Therefore, the name '{0}' is assigned to the first non error output in the collection", name, existingOutputCount.ToString());
-                    Output = parentComponent.ComponentMetaData.OutputCollection[0];
-                    Name = name;
+                    if(!outputExists)
+                    {
+
+                        Console.WriteLine("WARN::: Only {1} output(s) are allowed. A new output with the name '{0}' cannot be added. Therefore, the name '{0}' is assigned to the first non error output in the collection", name, existingOutputCount.ToString());
+                        Output = parentComponent.ComponentMetaData.OutputCollection[0];
+                        Name = name;
+                    }
                 }
             }
         }

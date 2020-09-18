@@ -2,6 +2,8 @@
 using System.Data;
 using System.Collections.Generic;
 using Pegasus.DtsWrapper;
+using Pegasus.DtsWrapper.Source;
+using Pegasus.DtsWrapper.Destination;
 
 namespace Pegasus.Demo
 {
@@ -33,9 +35,9 @@ namespace Pegasus.Demo
              *  For all the txt files in a folder
              *      1. Load each text file into a table
              *      2. Before loading trim all string values
-             *  
+             *
              *  We will use the lumenworks.framework.io library to parse a text file and help infer data types
-             *  
+             *
              *  The package design needs to be as follows:
              *      1. A package for each file in the folder
              *      2. A master package that executes each of the above packages thru a ExecutePackage Task
@@ -81,17 +83,17 @@ namespace Pegasus.Demo
                 ISPackage packageForFile = new ISPackage(fileName, mainProject);
 
                 // A execute package task in the master package for each file
-                ISExecutePackageTask ept = new ISExecutePackageTask("Exec " + fileName, childPackageContainer); 
+                ISExecutePackageTask ept = new ISExecutePackageTask("Exec " + fileName, childPackageContainer);
                 ept.UseProjectReference = true;
                 ept.PackageName = packageForFile.Name; // this execute package task will call the child package
 
                 // A connection manager for each file; added to the main project
-                ISFlatFileConnectionManager fConn = new ISFlatFileConnectionManager(file, fileName, mainProject); 
+                ISFlatFileConnectionManager fConn = new ISFlatFileConnectionManager(file, fileName, mainProject);
                 fConn.ColumnNamesInFirstDataRow = true;
                 //fConn.TextQualifier = "\"";
                 fConn.Format = "Delimited";
                 fConn.RowDelimiter = "\r\n"; // check for LF/CRLF if using git
-                
+
                 //  create a FlatFile column for each column the in the source file
                 for (int i = 0; i < columnNames.Length; i++)
                 {
@@ -129,7 +131,7 @@ namespace Pegasus.Demo
                         dCol.Expression = "TRIM(" + column.Name + ")";
                     }
                 }
-                
+
                 //  Add a destination table in the target sql server.
                 ISOleDbDestinationComponent destination = new ISOleDbDestinationComponent(dft, "Target Table", dCom, dCom.GetOutputNameFromIndex(0));
                 destination.Connection = oleConn.Name;
@@ -167,9 +169,9 @@ namespace Pegasus.Demo
             /* The objective is as follows:
              *  For a given collection of tables
              *      1. Load each table into a text file
-             *  
+             *
              *  We will use SQL Server system tables to get the column metadata
-             *  
+             *
              *  The package design needs to be as follows:
              *      1. A package for each file in the folder
              *      2. A master package that executes each of the above packages thru a ExecutePackage Task
@@ -218,7 +220,7 @@ namespace Pegasus.Demo
 
             //  Add a sequence container; this container will contain the individual data flows for each text file
             ISSequence childPackageContainer = new ISSequence("Child Packages", parentPackage);
-            
+
 
             //  Iterate thru our table collection and do the following for each table
             foreach (SqlServerTable table in sqlServerTables)

@@ -3,7 +3,7 @@ using Microsoft.SqlServer.Dts.Pipeline.Wrapper;
 using System;
 using System.Collections.Generic;
 
-namespace Pegasus.DtsWrapper
+namespace Pegasus.DtsWrapper.Destination
 {
     public class ISAdoNetDestinationComponent : ISDestinationComponent
     {
@@ -58,7 +58,7 @@ namespace Pegasus.DtsWrapper
         #region Dts Properties
 
         #region BatchSize
-        
+
         public int BatchSize
         {
             get { return CustomPropertyGetter<int>("BatchSize"); }
@@ -66,7 +66,7 @@ namespace Pegasus.DtsWrapper
         }
 
         #endregion
-        
+
         #region CommandTimeOut
 
         public int CommandTimeout
@@ -230,7 +230,7 @@ namespace Pegasus.DtsWrapper
                         ISExternalMetadataColumn extCol = new ISExternalMetadataColumn(this, DtsInput.Name, map.ExternalColumn.ExternalColumnName, true);
                         for (int vi = 0; vi < viCols.Length; vi++)
                         {
-                            if (viCols[vi].ToLower() == map.InputColumnName.ToLower())
+                            if (string.Equals(viCols[vi], map.InputColumnName, StringComparison.CurrentCultureIgnoreCase))
                             {
                                 ISInputColumn ic = new ISInputColumn(this, DtsInput.Name, viCols[vi], UsageType.UT_READONLY);
                                 ic.ExternalMetadataColumnID = extCol.ID;

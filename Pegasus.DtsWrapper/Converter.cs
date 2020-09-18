@@ -1,4 +1,4 @@
-﻿using System;   
+﻿using System;
 
 namespace Pegasus.DtsWrapper
 {
@@ -201,7 +201,7 @@ namespace Pegasus.DtsWrapper
             return dt;
         }
 
-        public static SSISDataTypeWithProperty GetSSISDataTypeFromADONetDataType(string adoNetDataType, int dataTypeLength)
+        public static SSISDataTypeWithProperty GetSSISDataTypeFromADONetDataType(string adoNetDataType, int dataTypeLength, int scale = 0, int precision = 0)
         {
             SSISDataType dt = SSISDataType.DT_EMPTY;
             int codepage = 0;
@@ -267,8 +267,18 @@ namespace Pegasus.DtsWrapper
             SSISDataTypeWithProperty sdt = new SSISDataTypeWithProperty();
             sdt.DataType = dt;
             sdt.Length = length;
-            sdt.Precision = 0;
-            sdt.Scale = 0;
+            if (precision != 0)
+            {
+                sdt.Precision = precision;
+            }
+            else
+                sdt.Precision = 0;
+            if (scale != 0)
+            {
+                sdt.Scale = scale;
+            }
+            else
+                sdt.Scale = 0;
             sdt.CodePage = codepage;
 
             return sdt;
@@ -296,6 +306,7 @@ namespace Pegasus.DtsWrapper
                     return "DT_STR";
             }
         }
+
     }
 
     public struct SSISDataTypeWithProperty
@@ -305,5 +316,11 @@ namespace Pegasus.DtsWrapper
         public int Length { get; set; }
         public int Scale { get; set; }
         public int Precision { get; set; }
+    }
+    public struct MetaDataColumnCustomPropety
+    {
+        public string Name { get; set; }
+        public object Value { get; set; }
+        public bool ContainsId { get; set; }
     }
 }
