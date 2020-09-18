@@ -33,6 +33,8 @@ Currently, the following are available. More to follow.
 12. Ado.Net Destination Component
 13. Excel Source Component
 14. Flat File Destination Component
+15. KingswaySoft CRM Source Component
+16. KingswaySoft CRM Destination Component
 
 ### Others:
 1. Variables
